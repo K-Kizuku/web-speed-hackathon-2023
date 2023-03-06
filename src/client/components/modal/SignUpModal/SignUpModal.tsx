@@ -12,11 +12,8 @@ import { TextInput } from '../../foundation/TextInput';
 
 import * as styles from './SignUpModal.styles';
 
-const NOT_INCLUDED_AT_CHAR_REGEX = /^(?:[^@]*){6,}$/;
 const NOT_INCLUDED_SYMBOL_CHARS_REGEX = /^(?:(?:[a-zA-Z0-9]*){2,})+$/;
 
-// NOTE: 文字列に @ が含まれているか確認する
-const emailSchema = z.string().refine((v) => !NOT_INCLUDED_AT_CHAR_REGEX.test(v));
 // NOTE: 文字列に英数字以外の文字が含まれているか確認する
 const passwordSchema = z.string().refine((v) => !NOT_INCLUDED_SYMBOL_CHARS_REGEX.test(v));
 
@@ -27,7 +24,7 @@ export type SignUpForm = {
 };
 
 export const SignUpModal: FC = () => {
-  const isOpened = useIsOpenModal('SIGN_UP');
+  const isOpened = useIsOpenModal(0);
   const { signUp } = useSignUp();
 
   const handleOpenModal = useOpenModal();
@@ -53,12 +50,13 @@ export const SignUpModal: FC = () => {
         setSubmitError(null);
         handleCloseModal();
       } catch (err) {
+        console.error(submitError);
         setSubmitError(err as Error);
       }
     },
     validate(values) {
       const errors: FormikErrors<SignUpForm> = {};
-      if (values.email != '' && !emailSchema.safeParse(values.email).success) {
+      if (values.email.indexOf('@') === -1) {
         errors['email'] = 'メールアドレスの形式が間違っています';
       }
       if (values.password != '' && !passwordSchema.safeParse(values.password).success) {
@@ -77,7 +75,7 @@ export const SignUpModal: FC = () => {
           <button
             className={styles.switchToSignInButton()}
             data-testid="modal-switch-to-signin"
-            onClick={() => handleOpenModal('SIGN_IN')}
+            onClick={() => handleOpenModal(1)}
           >
             ログイン
           </button>
@@ -122,7 +120,9 @@ export const SignUpModal: FC = () => {
               登録する
             </PrimaryButton>
           </div>
-          {submitError ? <p className={styles.error()}>会員登録に失敗しました</p> : null}
+          <p className={styles.error()} style={{ display: submitError !== null ? 'inline' : 'none' }}>
+            会員登録に失敗しました
+          </p>
         </form>
       </div>
     </Modal>
