@@ -1,7 +1,9 @@
 import path from 'node:path';
 
+import purgecss from '@fullhuman/postcss-purgecss';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import viteCompression from 'vite-plugin-compression';
 import { ViteEjsPlugin } from 'vite-plugin-ejs';
 import topLevelAwait from 'vite-plugin-top-level-await';
 import wasm from 'vite-plugin-wasm';
@@ -32,7 +34,19 @@ export default defineConfig(async () => {
           experimentalMinChunkSize: 40960,
         },
       },
-      target: 'es2015',
+      // target: 'es2015',
+      target: 'chrome110',
+    },
+    css: {
+      postcss: {
+        plugins: [
+          purgecss({
+            content: ['dist/*.html', 'dist/assets/*.js'],
+            // css: ["dist/assets/*.css"],
+            // safelist: [/filepond-*/],
+          }),
+        ],
+      },
     },
     plugins: [
       react(),
@@ -43,6 +57,7 @@ export default defineConfig(async () => {
         title: '買えるオーガニック',
         videos,
       }),
+      viteCompression(),
     ],
   };
 });
