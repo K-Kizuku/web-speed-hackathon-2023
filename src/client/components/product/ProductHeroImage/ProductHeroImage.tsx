@@ -32,7 +32,7 @@ async function loadImageAsDataURL(url: string): Promise<string> {
   const ctx = canvas.getContext('2d');
   // @ts-expect-error ...
   ctx?.drawImage(image, 0, 0);
-  return canvas.toDataURL();
+  return canvas.toDataURL('image/webp');
 }
 
 type Props = {
