@@ -13,19 +13,25 @@ const syncXhr: HttpOptions['fetch'] = (uri, options) => {
       return reject();
     }
 
-    const request = new XMLHttpRequest();
-    request.open(method, uri.toString(), false);
-    request.setRequestHeader('content-type', 'application/json');
-    request.onload = () => {
-      if (request.status >= 200 && request.status < 300) {
-        return resolve(new Response(request.response));
-      }
-
+    let res: Response;
+    try {
+      fetch(uri.toString(), {
+        body: body,
+        headers: {
+          'content-type': 'application/json',
+        },
+        method: method,
+      })
+        .then((response) => (res = response))
+        .then(() => {
+          if (res.status >= 200 && res.status < 300) {
+            return resolve(new Response(res.body));
+          }
+          reject();
+        });
+    } catch (err) {
       reject();
-    };
-    request.onerror = reject;
-
-    request.send(body);
+    }
   });
 };
 
