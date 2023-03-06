@@ -1,9 +1,9 @@
 type MediaType = 'image' | 'video';
 
 export function getMediaType(filename: string): MediaType {
-  if (filename.endsWith('.mp4')) {
-    return 'video';
+  if (filename.endsWith('.webp')) {
+    return 'image';
   }
 
-  return 'image';
+  return 'video';
 }
