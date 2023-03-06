@@ -66,7 +66,7 @@ export const ProductDetail: FC = () => {
                 <ProductPurchaseSection
                   amountInCart={amountInCart}
                   isAuthUser={isAuthUser}
-                  onOpenSignInModal={() => handleOpenModal('SIGN_IN')}
+                  onOpenSignInModal={() => handleOpenModal(1)}
                   onUpdateCartItem={handleUpdateItem}
                   product={product}
                 />

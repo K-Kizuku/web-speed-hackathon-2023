@@ -42,7 +42,7 @@ export const ReviewSection: FC<Props> = memo(({ hasSignedIn, onSubmitReview, rev
       }
       return errors;
     },
-    validateOnChange: true,
+    // validateOnChange: true,
   });
 
   return (
