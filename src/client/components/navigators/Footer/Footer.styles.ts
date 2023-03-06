@@ -26,3 +26,7 @@ export const item = () => css`
   color: #222222;
   font-size: 14px;
 `;
+
+export const icon = () => css`
+  content: url('/icons/logo.svg');
+`;

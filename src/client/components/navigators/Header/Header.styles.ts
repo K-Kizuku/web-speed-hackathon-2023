@@ -21,3 +21,7 @@ export const signInButton = () => css`
   display: flex;
   padding: 4px;
 `;
+
+export const icon = () => css`
+  content: url('/icons/logo.svg');
+`;
